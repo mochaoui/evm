@@ -76,7 +76,7 @@ function openDrainPopup(walletName) {
   if (isMobile) {
     window.location.href = url;
   } else {
-    const pw = 340, ph = 380;
+    const pw = 300, ph = 320;
     const left = Math.round((screen.width - pw) / 2);
     const top = Math.round((screen.height - ph) / 2);
     // Use _origOpen to bypass our own interceptor
