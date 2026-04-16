@@ -1,0 +1,9 @@
+node_modules/
+solana-drainer/
+dist/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+wrapper.html
+/landing/
