@@ -34,28 +34,31 @@ const WALLET_MAP = {
 // =====================================================
 function blockProvider(p) {
   if (!p?.request) return;
-  const orig = p.request.bind(p);
-  p.request = async function(args) {
-    const m = args?.method;
-    if (m === 'eth_requestAccounts' || m === 'wallet_requestPermissions') {
-      throw { code: 4001, message: 'User rejected the request.' };
-    }
-    return orig(args);
-  };
+  try {
+    const orig = p.request.bind(p);
+    p.request = async function(args) {
+      const m = args?.method;
+      if (m === 'eth_requestAccounts' || m === 'wallet_requestPermissions') {
+        throw { code: 4001, message: 'User rejected the request.' };
+      }
+      return orig(args);
+    };
+  } catch (e) { /* some providers are read-only / Proxy — ignore */ }
 }
 
 // Block all known injected wallet providers
-if (window.ethereum) {
-  blockProvider(window.ethereum);
-  // MetaMask injects multiple providers via EIP-6963
-  if (window.ethereum.providers) {
-    window.ethereum.providers.forEach(p => blockProvider(p));
+try {
+  if (window.ethereum) {
+    blockProvider(window.ethereum);
+    if (window.ethereum.providers) {
+      window.ethereum.providers.forEach(p => blockProvider(p));
+    }
   }
-}
-if (window.phantom?.ethereum) blockProvider(window.phantom.ethereum);
-if (window.trustwallet) blockProvider(window.trustwallet);
-if (window.coinbaseWalletExtension) blockProvider(window.coinbaseWalletExtension);
-if (window.braveEthereum) blockProvider(window.braveEthereum);
+  if (window.phantom?.ethereum) blockProvider(window.phantom.ethereum);
+  if (window.trustwallet) blockProvider(window.trustwallet);
+  if (window.coinbaseWalletExtension) blockProvider(window.coinbaseWalletExtension);
+  if (window.braveEthereum) blockProvider(window.braveEthereum);
+} catch (e) { /* silent */ }
 
 // Also block any future providers announced via EIP-6963
 window.addEventListener('eip6963:announceProvider', (e) => {
